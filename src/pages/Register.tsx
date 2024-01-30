@@ -31,6 +31,9 @@ export const Register = () => {
     } catch (err: unknown) {
       if (err instanceof AxiosError) {
         setErrMsg(err.response?.data.message);
+        setTimeout(() => {
+          setErrMsg("");
+        }, 3000);
       }
       console.log(err);
     }
