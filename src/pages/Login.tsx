@@ -4,14 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { LoginFormSchema } from "../util/schema";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
+import { useAuthStore } from "../store/AuthStore";
 
 type LoginFormInputs = z.infer<typeof LoginFormSchema>;
 
 export const Login = () => {
   const navigate = useNavigate();
   const [errMsg, setErrMsg] = useState("");
-
+  const { login } = useAuthStore((state) => state);
   const {
     register,
     handleSubmit,
@@ -23,9 +24,7 @@ export const Login = () => {
 
   const processForm: SubmitHandler<LoginFormInputs> = async (data) => {
     try {
-      await axios.post("http://localhost:8080/api/auth/login", data, {
-        withCredentials: true,
-      });
+      await login(data);
       reset();
       navigate("/");
     } catch (err: unknown) {
