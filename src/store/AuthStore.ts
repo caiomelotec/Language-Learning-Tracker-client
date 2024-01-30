@@ -15,7 +15,7 @@ type UserActions = {
 export const useAuthStore = create<User & UserActions>((set) => ({
   currentUser: localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")!)
-    : "null",
+    : null,
 
   login: async (input) => {
     const res = await axios.post(
@@ -25,9 +25,12 @@ export const useAuthStore = create<User & UserActions>((set) => ({
         withCredentials: true,
       }
     );
-    console.log(res.data);
+
     set({ currentUser: res.data.userInfo });
-    localStorage.setItem("user", JSON.stringify(res.data.userInfo));
+    localStorage.setItem(
+      "user",
+      JSON.stringify(res.data.userInfo ? res.data.userInfo : "null")
+    );
   },
   logout: async () => {
     await axios.post("https://localhost:8080/api/auth/logout", null, {
