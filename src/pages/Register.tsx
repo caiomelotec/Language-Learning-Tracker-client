@@ -1,13 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RegisterFormSchema } from "../util/schema";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
+import axios, { AxiosError } from "axios";
 
 type RegisterFormInputs = z.infer<typeof RegisterFormSchema>;
 
 export const Register = () => {
+  const navigate = useNavigate();
   const [errMsg, setErrMsg] = useState("");
 
   const {
@@ -19,8 +21,19 @@ export const Register = () => {
     resolver: zodResolver(RegisterFormSchema),
   });
 
-  const processForm: SubmitHandler<RegisterFormInputs> = (data) => {
-    console.log(data);
+  const processForm: SubmitHandler<RegisterFormInputs> = async (data) => {
+    try {
+      await axios.post("http://localhost:8080/api/auth/register", data, {
+        withCredentials: true,
+      });
+      reset();
+      navigate("/login");
+    } catch (err: unknown) {
+      if (err instanceof AxiosError) {
+        setErrMsg(err.response?.data.message);
+      }
+      console.log(err);
+    }
   };
 
   return (
@@ -100,6 +113,11 @@ export const Register = () => {
             <span className="text-blue-500">Sign in</span>
           </Link>
         </div>
+        {errMsg && (
+          <p className="my-1 p-1 text-rose-600  rounded-lg font-semibold">
+            {errMsg}
+          </p>
+        )}
       </form>
     </div>
   );
