@@ -5,6 +5,7 @@ import { RegisterFormSchema } from "../util/schema";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 import axios, { AxiosError } from "axios";
+import { OAuth } from "../components/OAuth";
 
 type RegisterFormInputs = z.infer<typeof RegisterFormSchema>;
 
@@ -82,6 +83,7 @@ export const Register = () => {
             type="password"
             placeholder="Password"
             id="password"
+            autoComplete="off"
             className="bg-slate-300 p-3 rounded-lg placeholder:text-slate-500
           bg-gradient-to-r from-slate-400 to-gray-300 w-full"
             {...register("password")}
@@ -94,6 +96,7 @@ export const Register = () => {
         </div>
         <div>
           <input
+            autoComplete="off"
             type="password"
             placeholder="confirmPassword"
             id="confirmPassword"
@@ -110,6 +113,7 @@ export const Register = () => {
         <button className=" bg-gradient-to-r from-slate-700 to-gray-400 text-white p-3 rounded-lg uppercase hover:bg-gradient-to-r hover:from-gray-400 hover:to-slate-700 duration-200 disabled:opacity-80 w-fit">
           Sign Up
         </button>
+        <OAuth />
         <div>
           <p className="text-white text-lg">Have an account ?</p>
           <Link to={"/login"}>

@@ -6,6 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
 import { AxiosError } from "axios";
 import { useAuthStore } from "../store/AuthStore";
+import { OAuth } from "../components/OAuth";
 
 type LoginFormInputs = z.infer<typeof LoginFormSchema>;
 
@@ -62,6 +63,7 @@ export const Login = () => {
         </div>
         <div>
           <input
+            autoComplete="off"
             type="password"
             placeholder="Password"
             id="password"
@@ -79,9 +81,8 @@ export const Login = () => {
           <button className=" bg-gradient-to-r from-slate-700 to-gray-400 text-white p-3 rounded-lg uppercase hover:bg-gradient-to-r hover:from-gray-400 hover:to-slate-700 duration-200 disabled:opacity-80 w-fit">
             Sign In
           </button>
-          <button className=" bg-gradient-to-r from-sky-800 to-gray-400 text-white p-3 rounded-lg uppercase hover:bg-gradient-to-r hover:from-gray-400 hover:to-sky-800 duration-200 disabled:opacity-80 w-fit">
-            Sign In With Google
-          </button>
+
+          <OAuth />
         </div>
         <div>
           <p className="text-white text-lg">Don't have an account ?</p>
