@@ -4,16 +4,16 @@ import { Link, useNavigate } from "react-router-dom";
 import { LoginFormSchema } from "../util/schema";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as z from "zod";
-import { AxiosError } from "axios";
-import { useAuthStore } from "../store/AuthStore";
+import axios, { AxiosError } from "axios";
 import { OAuth } from "../components/OAuth";
+import { useSaveStore } from "../store/saveUserDataStorage";
 
 type LoginFormInputs = z.infer<typeof LoginFormSchema>;
 
 export const Login = () => {
   const navigate = useNavigate();
   const [errMsg, setErrMsg] = useState("");
-  const { login } = useAuthStore((state) => state);
+  const { save } = useSaveStore();
   const {
     register,
     handleSubmit,
@@ -25,7 +25,14 @@ export const Login = () => {
 
   const processForm: SubmitHandler<LoginFormInputs> = async (data) => {
     try {
-      await login(data);
+      const res = await axios.post(
+        "http://localhost:8080/api/auth/login",
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+      save(res.data.userInfo);
       reset();
       navigate("/");
     } catch (err: unknown) {
