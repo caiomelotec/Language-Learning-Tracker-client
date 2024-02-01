@@ -3,9 +3,11 @@ import { app } from "../firebase";
 import axios from "axios";
 import { useSaveStore } from "../store/saveUserDataStorage";
 import { FaGoogle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export const OAuth = () => {
   const { save } = useSaveStore();
+  const navigate = useNavigate();
 
   const handleGoogleAuth = async () => {
     try {
@@ -19,6 +21,7 @@ export const OAuth = () => {
       });
 
       save(res.data.userInfo);
+      navigate("/");
     } catch (err) {
       console.log(err);
     }

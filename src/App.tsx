@@ -5,6 +5,8 @@ import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
 import { About } from "./pages/About";
 import { Header } from "./components/Header";
+import { PrivatRoute } from "./components/PrivatRoute";
+import PrivatLoginRoute from "./components/PrivatLoginRoute";
 
 export default function App() {
   return (
@@ -13,9 +15,15 @@ export default function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route element={<PrivatRoute />}>
+            <Route path="/profile" element={<Profile />} />
+          </Route>
+          <Route element={<PrivatLoginRoute />}>
+            <Route path="/login" element={<Login />} />
+          </Route>
+          <Route element={<PrivatLoginRoute />}>
+            <Route path="/register" element={<Register />} />
+          </Route>
           <Route path="/about" element={<About />} />
         </Routes>
       </BrowserRouter>
