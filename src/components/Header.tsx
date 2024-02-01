@@ -22,8 +22,6 @@ export const Header = () => {
     }
   };
 
-  console.log(currentUser?.profileImg);
-
   return (
     <div
       className="flex justify-center bg-gradient-to-r from-sky-800 to-slate-800
