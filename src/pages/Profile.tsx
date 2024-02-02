@@ -1,18 +1,31 @@
+import { useRef, useState } from "react";
 import DeleteAccountModal from "../components/DeleteAccountModal";
 import { useSaveStore } from "../store/saveUserDataStorage";
 
 export const Profile = () => {
+  const fileRef = useRef<HTMLInputElement | null>(null);
+  const [img, setImg] = useState<File | null>(null);
   const { currentUser } = useSaveStore();
+
+  console.log(img);
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-white text-center my-7">
         Profile
       </h1>
       <form action="" className="flex flex-col gap-5">
+        <input
+          type="file"
+          ref={fileRef}
+          hidden
+          accept="image/*"
+          onChange={(e) => setImg(e.target ? e.target.files![0] : null)}
+        />
         <img
           className="w-24 h-24 self-center cursor-pointer rounded-full object-cover"
           src={currentUser?.profileImg}
           alt="profile"
+          onClick={() => fileRef.current?.click()}
         />
         <input
           type="text"
