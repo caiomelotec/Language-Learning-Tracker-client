@@ -1,13 +1,54 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import DeleteAccountModal from "../components/DeleteAccountModal";
 import { useSaveStore } from "../store/saveUserDataStorage";
+import {
+  StorageError,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../firebase";
 
 export const Profile = () => {
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [img, setImg] = useState<File | null>(null);
+  const [progress, setProgress] = useState(0);
   const { currentUser } = useSaveStore();
+  const [imgError, setImgError] = useState(false);
+  const [formData, setFormData] = useState({});
 
-  console.log(img);
+  useEffect(() => {
+    if (img) {
+      handleFileUpload(img);
+    }
+  }, [img]);
+
+  const handleFileUpload = async (img: File): Promise<void> => {
+    const storage = getStorage(app);
+
+    const fileName = Date.now() + img.name;
+    const storageRef = ref(storage, fileName.split(" ").join(""));
+    const uploadTask = uploadBytesResumable(storageRef, img);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(Math.round(progress));
+      },
+      (err: StorageError) => {
+        if (err) setImgError(true);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setFormData({ ...formData, profileImg: downloadURL });
+        });
+      }
+    );
+  };
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-white text-center my-7">
@@ -27,6 +68,29 @@ export const Profile = () => {
           alt="profile"
           onClick={() => fileRef.current?.click()}
         />
+        {/*Handle Img progress state */}
+        {/* {imgError && (
+          <span className="text-red-600 text-lg text-center">
+            Error uploading img
+          </span>
+        )} */}
+        {progress > 0 && progress < 100 && (
+          <span className="text-white text-center text-lg">
+            Uploading: {progress} %
+          </span>
+        )}
+        {progress === 100 && !imgError ? (
+          <span className="text-lg text-center text-green-500">
+            File uploaded sucessfully!
+          </span>
+        ) : (
+          imgError && (
+            <span className="text-red-600 text-lg text-center">
+              Error uploading img(file size must be less than 2MB)
+            </span>
+          )
+        )}
+        {/*  */}
         <input
           type="text"
           placeholder="Username"
