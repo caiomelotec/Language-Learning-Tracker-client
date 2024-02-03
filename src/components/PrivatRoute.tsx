@@ -2,7 +2,7 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useSaveStore } from "../store/saveUserDataStorage";
 
 export const PrivatRoute = () => {
-  const { currentUser } = useSaveStore();
+  const { localUser } = useSaveStore();
 
-  return currentUser ? <Outlet /> : <Navigate to="/login" />;
+  return localUser ? <Outlet /> : <Navigate to="/login" />;
 };
