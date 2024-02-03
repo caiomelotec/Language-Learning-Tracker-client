@@ -10,13 +10,20 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 
+type FormData = {
+  usernmae?: string;
+  email?: string;
+  password?: string;
+  profileImg?: string | undefined;
+};
+
 export const Profile = () => {
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [img, setImg] = useState<File | null>(null);
   const [progress, setProgress] = useState(0);
   const { currentUser } = useSaveStore();
   const [imgError, setImgError] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState<FormData>({});
 
   useEffect(() => {
     if (img) {
@@ -64,7 +71,7 @@ export const Profile = () => {
         />
         <img
           className="w-24 h-24 self-center cursor-pointer rounded-full object-cover"
-          src={currentUser?.profileImg}
+          src={formData?.profileImg || currentUser?.profileImg}
           alt="profile"
           onClick={() => fileRef.current?.click()}
         />
