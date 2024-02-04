@@ -1,20 +1,29 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSaveStore } from "../store/saveUserDataStorage";
 import axios from "axios";
+import { useFetchUserStore } from "../store/userStore";
+import { useEffect } from "react";
 
 export const Header = () => {
-  const { currentUser, remove } = useSaveStore();
+  const { remove, localUser } = useSaveStore();
+  const { currentUser, fetchUser } = useFetchUserStore();
   const navigate = useNavigate();
-  const logout = async () => {
+
+  const fetchData = async () => {
+    await fetchUser();
+  };
+
+  useEffect(() => {
+    if (localUser) {
+      fetchData();
+    }
+  }, [fetchUser, localUser]);
+
+  const logout = async (): Promise<void> => {
     try {
-      const res = await axios.post(
-        "http://localhost:8080/api/auth/logout",
-        null,
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(res);
+      await axios.post("http://localhost:8080/api/auth/logout", null, {
+        withCredentials: true,
+      });
       remove();
       navigate("/login");
     } catch (error) {
@@ -38,7 +47,7 @@ export const Header = () => {
           <li>
             <Link to="/about">About</Link>
           </li>
-          {currentUser ? (
+          {localUser ? (
             <li onClick={logout}>
               <button className="">Logout</button>
             </li>
@@ -47,11 +56,12 @@ export const Header = () => {
               <Link to="/login">Login</Link>
             </li>
           )}
+
           <Link to="/profile">
-            {currentUser && (
+            {localUser && (
               <img
                 className="rounded-full h-14 w-14 object-cover"
-                src={currentUser.profileImg}
+                src={currentUser?.profileImg}
                 alt=""
               />
             )}
