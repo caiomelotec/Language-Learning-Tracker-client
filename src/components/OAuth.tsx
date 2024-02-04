@@ -14,11 +14,15 @@ export const OAuth = () => {
       const provider = new GoogleAuthProvider();
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
-      const res = await axios.post("http://localhost:8080/api/auth/google", {
-        username: result.user.displayName,
-        email: result.user.email,
-        photo: result.user.photoURL,
-      });
+      const res = await axios.post(
+        "http://localhost:8080/api/auth/google",
+        {
+          username: result.user.displayName,
+          email: result.user.email,
+          photo: result.user.photoURL,
+        },
+        { withCredentials: true }
+      );
 
       save(res.data.userInfo);
       navigate("/");
