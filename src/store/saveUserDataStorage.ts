@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 type User = {
-  currentUser: userData | null;
+  localUser: userData | null;
 };
 type userData = {
   email: string;
@@ -15,16 +15,16 @@ type SaveActions = {
 };
 
 export const useSaveStore = create<User & SaveActions>((set) => ({
-  currentUser: localStorage.getItem("user")
+  localUser: localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")!)
     : null,
 
   save: (input) => {
-    set({ currentUser: input });
+    set({ localUser: input });
     localStorage.setItem("user", JSON.stringify(input ? input : "null"));
   },
   remove: () => {
-    set({ currentUser: null });
+    set({ localUser: null });
     localStorage.removeItem("user");
   },
 }));
