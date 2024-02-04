@@ -7,6 +7,7 @@ import { About } from "./pages/About";
 import { Header } from "./components/Header";
 import { PrivatRoute } from "./components/PrivatRoute";
 import PrivatLoginRoute from "./components/PrivatLoginRoute";
+import { Cards } from "./pages/Cards";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
             <Route path="/register" element={<Register />} />
           </Route>
           <Route path="/about" element={<About />} />
+          <Route path="/cards" element={<Cards />} />
         </Routes>
       </BrowserRouter>
     </div>
