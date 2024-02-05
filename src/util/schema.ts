@@ -29,3 +29,8 @@ export const LoginFormSchema = z.object({
     .email({ message: "Invalid email format" }),
   password: z.string().min(6, { message: "Password is required" }),
 });
+
+export const AddVocabularyFormSchema = z.object({
+  word: z.string().min(1, { message: "Word field is required" }),
+  meaning: z.string().min(1, { message: "Meaning field is required" }),
+});
