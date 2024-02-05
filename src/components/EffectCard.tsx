@@ -53,12 +53,15 @@ export const EffectCard = () => {
   ];
 
   return (
-    <>
+    <div
+      style={{ height: "600px", width: "300px" }}
+      className="m-0 p-0 mx-auto"
+    >
       <Swiper
         effect={"cards"}
         grabCursor={true}
         modules={[EffectCards]}
-        className="mySwiper mt-40 w-72 h-80 md:w-80 md:h-1/2"
+        className="mySwiper w-72 md:h-128 h-82 md:w-80 m-0 p-0"
       >
         {wordsArray.map((w, i) => (
           <SwiperSlide
@@ -76,6 +79,6 @@ export const EffectCard = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </>
+    </div>
   );
 };
