@@ -34,3 +34,9 @@ export const AddVocabularyFormSchema = z.object({
   word: z.string().min(1, { message: "Word field is required" }),
   meaning: z.string().min(1, { message: "Meaning field is required" }),
 });
+
+export const LanguageFormSchema = z
+  .object({
+    name: z.string().min(1, { message: "This field is required" }),
+  })
+  .required();
