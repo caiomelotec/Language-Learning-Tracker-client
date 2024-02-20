@@ -38,7 +38,7 @@ export const Header = () => {
     >
       <div className="flex justify-between items-center gap-32 py-5">
         <Link to={"/"} className="md:flex hidden">
-          <h1 className="font-bold text-2xl text-white">Hey Auth</h1>
+          <h1 className="font-bold text-2xl text-white">Hey Cards</h1>
         </Link>
         <ul className="flex gap-5 font-semibold text-xl text-white items-center">
           <li>
