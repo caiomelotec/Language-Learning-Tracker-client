@@ -28,16 +28,32 @@ export const AddVocabularyForm = () => {
         <input
           type="text"
           {...register("word")}
-          className="rounded-xl p-1 w-full bg-gradient-to-r from-slate-400 to-gray-200 placeholder:text-slate-600"
-          placeholder="Write the word you want to learn"
+          className={`rounded-xl p-1 w-full bg-gradient-to-r from-slate-400 to-gray-200 ${
+            errors.word?.message
+              ? "placeholder:text-rose-600"
+              : "placeholder:text-slate-600"
+          } `}
+          placeholder={
+            errors.word?.message
+              ? errors.word.message
+              : "Write the word you want to learn"
+          }
         />
         <label className="text-white ml-2">Meaning:</label>
         <input
           {...register("meaning")}
           type="text"
-          className="rounded-xl p-1 w-full bg-gradient-to-r from-slate-400 to-gray-200 placeholder:text-slate-600"
+          className={`rounded-xl p-1 w-full bg-gradient-to-r from-slate-400 to-gray-200 ${
+            errors.meaning?.message
+              ? "placeholder:text-rose-600"
+              : "placeholder:text-slate-600"
+          }`}
           id="meaning"
-          placeholder="Give meaning to it"
+          placeholder={
+            errors.meaning?.message
+              ? errors.meaning.message
+              : "Give meaning to it"
+          }
         />
         <button
           className="text-white font-semibold text-lg bg-gradient-to-r from-sky-700 to-sky-950 py-2 px-4 rounded-lg ml-2
@@ -46,12 +62,6 @@ export const AddVocabularyForm = () => {
           Add
         </button>
       </form>
-      {errors.word?.message && (
-        <p className="my-1 text-lg text-rose-600">{errors.word.message}</p>
-      )}
-      {errors.meaning?.message && (
-        <p className="my-1 text-lg text-rose-600">{errors.meaning.message}</p>
-      )}
     </div>
   );
 };
