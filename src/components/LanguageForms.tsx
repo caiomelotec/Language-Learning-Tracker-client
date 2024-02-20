@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LanguageFormSchema } from "../util/schema";
 import { SubmitHandler, useForm } from "react-hook-form";
+import axios from "axios";
 
 type LanguageFormsInputs = Zod.infer<typeof LanguageFormSchema>;
 export const LanguageForms = () => {
@@ -14,7 +15,14 @@ export const LanguageForms = () => {
   });
 
   const processForm: SubmitHandler<LanguageFormsInputs> = async (data) => {
-    console.log(data);
+    try {
+      await axios.post("http://localhost:8080/api/language/addlanguage", data, {
+        withCredentials: true,
+      });
+      reset();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
