@@ -41,7 +41,15 @@ export const EffectCard = () => {
     fetchCards();
   }, [cards]);
 
-  // console.log(cards);
+  const deleteCard = async (id: string) => {
+    try {
+      await axios.delete(`http://localhost:8080/api/language/card/${id}`, {
+        withCredentials: true,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div
       style={{ height: "600px", width: "300px" }}
@@ -63,6 +71,7 @@ export const EffectCard = () => {
               <MdDelete
                 className="absolute top-5 right-6 cursor-pointer"
                 size={25}
+                onClick={() => deleteCard(w._id)}
               />
               <h1 className="my-2">Word: {w.word}</h1>
               <p>Meaning:</p>
