@@ -1,3 +1,4 @@
+import axios from "axios";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
 
@@ -11,6 +12,16 @@ type LanguageInfoProps = {
 };
 
 export const LanguageInfo = ({ languages }: LanguageInfoProps) => {
+  const deleteLanguage = async (id: string): Promise<void> => {
+    try {
+      console.log(id);
+      await axios.delete(`http://localhost:8080/api/language/lang/${id}`, {
+        withCredentials: true,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       {languages.map((language: Language) => (
@@ -20,7 +31,11 @@ export const LanguageInfo = ({ languages }: LanguageInfoProps) => {
         >
           <div className="text-white text-2xl">{language.name}</div>
           <div className="flex gap-4 items-center">
-            <MdDelete className="text-white cursor-pointer" size={22} />
+            <MdDelete
+              className="text-white cursor-pointer"
+              size={22}
+              onClick={() => deleteLanguage(language.id)}
+            />
             <Link
               to={`/card/${language.id}`}
               className="text-white font-semibold text-lg bg-gradient-to-r from-sky-700 to-sky-950 py-2 px-4 rounded-lg ml-2
