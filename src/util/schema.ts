@@ -33,6 +33,7 @@ export const LoginFormSchema = z.object({
 export const AddVocabularyFormSchema = z.object({
   word: z.string().min(1, { message: "Word field is required" }),
   meaning: z.string().min(1, { message: "Meaning field is required" }),
+  languageId: z.string(),
 });
 
 export const LanguageFormSchema = z
