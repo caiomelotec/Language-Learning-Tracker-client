@@ -28,7 +28,7 @@ export default function App() {
             <Route path="/register" element={<Register />} />
           </Route>
           <Route path="/about" element={<About />} />
-          <Route path="/cards" element={<Cards />} />
+          <Route path="/card/:id" element={<Cards />} />
         </Routes>
       </BrowserRouter>
     </div>
